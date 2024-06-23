@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multi_vendor2/controller/auth_controller.dart';
 import 'package:multi_vendor2/utils/show_snackBar.dart';
+import 'package:multi_vendor2/views/buyers/auth/register_screen.dart';
 import 'package:multi_vendor2/views/buyers/main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,7 +18,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   late String password;
 
+  bool _isLoading = false;
+
   _loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
     if (_formKey.currentState!.validate()) {
       String res = await _authController.loginUsers(email, password);
       if (res == 'success') {
@@ -30,6 +36,9 @@ class _LoginScreenState extends State<LoginScreen> {
         return showSnack(context, res);
       }
     } else {
+      setState(() {
+        _isLoading = false;
+      });
       return showSnack(context, 'Please fields must not be empty');
     }
   }
@@ -74,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Padding(
                 padding: const EdgeInsets.all(13.0),
                 child: TextFormField(
+                  obscureText: true,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please password must not empty';
@@ -100,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.yellow.shade900,
                       borderRadius: BorderRadius.circular(10)),
                   child: Center(
-                    child: Text(
+                    child: _isLoading ? CircularProgressIndicator(color: Colors.white,) : Text(
                       'Login',
                       style: TextStyle(letterSpacing: 5, color: Colors.white),
                     ),
@@ -112,7 +122,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Text('Need An Account?'),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return RegisterScreen();
+                      },));
+                    },
                     child: Text('Register'),
                   ),
                 ],

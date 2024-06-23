@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 class BannerWidget extends StatefulWidget {
   @override
@@ -45,11 +47,28 @@ class _BannerWidgetState extends State<BannerWidget> {
             itemCount: _bannerImage.length,
             itemBuilder: (context, index) {
               return ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    _bannerImage[index],
-                    fit: BoxFit.cover,
-                  ));
+                borderRadius: BorderRadius.circular(10),
+                child: CachedNetworkImage(
+                  imageUrl: _bannerImage[index],
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Shimmer(
+                    duration: Duration(seconds: 10),
+                    interval: Duration(seconds: 10),
+                    color: Colors.white,
+                    colorOpacity: 0,
+                    enabled: true,
+                    direction: ShimmerDirection.fromLTRB(),
+                    child: Container(
+                      color: Colors.white,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
+              );
+              // child: Image.network(
+              //   _bannerImage[index],
+              //   fit: BoxFit.cover,
+              // ));
             },
           )),
     );

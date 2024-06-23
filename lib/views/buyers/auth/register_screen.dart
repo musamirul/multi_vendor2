@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:multi_vendor2/controller/auth_controller.dart';
 import 'package:multi_vendor2/utils/show_snackBar.dart';
 import 'package:multi_vendor2/views/buyers/auth/login_screen.dart';
@@ -24,13 +27,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool _isLoading = false;
 
+  Uint8List? _image;
+
   _signUpUser() async {
     setState(() {
       _isLoading = true;
     });
     if (_formKey.currentState!.validate()) {
       await _authController
-          .signUpUsers(email, fullName, phoneNumber, password)
+          .signUpUsers(email, fullName, phoneNumber, password, _image)
           .whenComplete(() {
         setState(() {
           _formKey.currentState!.reset();
@@ -52,6 +57,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return showSnack(context, 'Please fields must bot be empty');
     }
   }
+  
+  selectGalleryImage() async{
+    Uint8List im = await _authController.pickProfileImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
+  }
+
+  selectCameraImage() async{
+    Uint8List im = await _authController.pickProfileImage(ImageSource.camera);
+    setState(() {
+      _image = im;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +86,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   'Create Customer Account',
                   style: TextStyle(fontSize: 20),
                 ),
-                CircleAvatar(
-                  radius: 64,
-                  backgroundColor: Colors.yellow.shade900,
+                Stack(
+                  children: [
+                    _image!=null ? CircleAvatar(
+                      radius: 64,
+                      backgroundColor: Colors.yellow.shade900,
+                      backgroundImage: MemoryImage(_image!),
+                    ):CircleAvatar(
+                      radius: 64,
+                      backgroundColor: Colors.yellow.shade900,
+                      backgroundImage: NetworkImage('https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'),
+                    ),
+                    Positioned(
+                        right: 0,
+                        top: 5,
+                        child: IconButton(
+                          onPressed: () {
+                            selectCameraImage();
+                          },
+                          icon: Icon(Icons.photo),
+                          color: Colors.white,
+                        ))
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.all(13.0),
