@@ -6,13 +6,13 @@ import 'package:multi_vendor2/controller/auth_controller.dart';
 import 'package:multi_vendor2/utils/show_snackBar.dart';
 import 'package:multi_vendor2/views/buyers/auth/login_screen.dart';
 
-class RegisterScreen extends StatefulWidget {
+class BuyerRegisterScreen extends StatefulWidget {
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<BuyerRegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
-  // RegisterScreen({super.key});
+class _RegisterScreenState extends State<BuyerRegisterScreen> {
+  // BuyerRegisterScreen({super.key});
   final AuthController _authController = AuthController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();

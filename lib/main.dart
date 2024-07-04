@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_vendor2/vendor/views/screens/main_vendor_screen.dart';
 import 'package:multi_vendor2/views/buyers/auth/register_screen.dart';
 import 'package:multi_vendor2/views/buyers/main_screen.dart';
 import 'firebase_options.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget{
       theme: ThemeData(
         primaryColor: Colors.blue,
       ),
-      home: RegisterScreen(),
+      home: MainVendorScreen(),
     );
   }
 }
