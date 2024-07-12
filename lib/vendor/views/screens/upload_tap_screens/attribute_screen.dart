@@ -5,6 +5,39 @@ class AttributeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Attribute Screen'),);
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'Brand',
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Flexible(
+                child: Container(
+                  width: 100,
+                  child: TextFormField(
+                    decoration: InputDecoration(labelText: 'Size'),
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                child: Text('Add'),
+                style:
+                    ElevatedButton.styleFrom(primary: Colors.yellow.shade900),
+              )
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
