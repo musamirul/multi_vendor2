@@ -14,9 +14,13 @@ class GeneralScreen extends StatefulWidget {
   State<GeneralScreen> createState() => _GeneralScreenState();
 }
 
-class _GeneralScreenState extends State<GeneralScreen> {
+class _GeneralScreenState extends State<GeneralScreen> with AutomaticKeepAliveClientMixin {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final List<String> _categoryList = [];
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
   _getCategory() {
     return _firestore
@@ -47,6 +51,7 @@ class _GeneralScreenState extends State<GeneralScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final ProductProvider _productProvider = Provider.of<ProductProvider>(context);
     return Scaffold(
         body: Padding(
@@ -55,6 +60,13 @@ class _GeneralScreenState extends State<GeneralScreen> {
         child: Column(
           children: [
             TextFormField(
+              validator: (value) {
+                if(value!.isEmpty){
+                  return 'Enter Product Name';
+                }else{
+                  return null;
+                }
+              },
               onChanged: (value) {
                 _productProvider.getFormData(productName: value);
               },
@@ -64,6 +76,13 @@ class _GeneralScreenState extends State<GeneralScreen> {
               height: 30,
             ),
             TextFormField(
+              validator: (value) {
+                if(value!.isEmpty){
+                  return 'Enter Product Price';
+                }else{
+                  return null;
+                }
+              },
               onChanged: (value) {
                 _productProvider.getFormData(productPrice: double.tryParse(value));
               },
@@ -73,6 +92,13 @@ class _GeneralScreenState extends State<GeneralScreen> {
               height: 30,
             ),
             TextFormField(
+              validator: (value) {
+                if(value!.isEmpty){
+                  return 'Enter Product Qty';
+                }else{
+                  return null;
+                }
+              },
               onChanged: (value) {
                 _productProvider.getFormData(quantity: int.tryParse(value));
               },
@@ -96,6 +122,13 @@ class _GeneralScreenState extends State<GeneralScreen> {
               height: 30,
             ),
             TextFormField(
+              validator: (value) {
+                if(value!.isEmpty){
+                  return 'Enter Product Description';
+                }else{
+                  return null;
+                }
+              },
               onChanged: (value) {
                 _productProvider.getFormData(description: value);
               },
@@ -136,4 +169,6 @@ class _GeneralScreenState extends State<GeneralScreen> {
       ),
     ));
   }
+
+
 }

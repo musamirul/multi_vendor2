@@ -15,7 +15,7 @@ class ProductProvider extends ChangeNotifier {
       DateTime? scheduleDate,
       List<String>? imageUrlList,
       bool? chargeShipping,
-      int? shippingCharge}) {
+      int? shippingCharge, String? brandName, List<String>? sizeList}) {
     //check if productName is not null
 
     //purpose : ensure that only non null values where added
@@ -46,5 +46,18 @@ class ProductProvider extends ChangeNotifier {
     if (shippingCharge != null) {
       productData['shippingCharge'] = shippingCharge;
     }
+    if (brandName != null) {
+      productData['brandName'] = brandName;
+    }
+    if (sizeList != null) {
+      productData['sizeList'] = sizeList;
+    }
+
+    notifyListeners();
+  }
+
+  clearData(){
+    productData.clear();
+    notifyListeners();
   }
 }

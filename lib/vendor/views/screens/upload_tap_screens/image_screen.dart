@@ -14,7 +14,7 @@ class ImageScreen extends StatefulWidget {
   State<ImageScreen> createState() => _ImageScreenState();
 }
 
-class _ImageScreenState extends State<ImageScreen> {
+class _ImageScreenState extends State<ImageScreen> with AutomaticKeepAliveClientMixin{
   final ImagePicker picker = ImagePicker();
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
@@ -35,6 +35,7 @@ class _ImageScreenState extends State<ImageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final ProductProvider _productProvider = Provider.of<ProductProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -67,20 +68,28 @@ class _ImageScreenState extends State<ImageScreen> {
             EasyLoading.show(status: 'Saving Images');
             for(var img in _image){
               Reference ref =_storage.ref().child('productImage').child(Uuid().v4());
+
               await ref.putFile(img).whenComplete(()async{
                 await ref.getDownloadURL().then((value) {
                   setState(() {
                     _imageUrlList.add(value);
-                    _productProvider.getFormData(imageUrlList: _imageUrlList);
-                    EasyLoading.dismiss();
-
+                    // _productProvider.getFormData(imageUrlList: _imageUrlList);
+                    // EasyLoading.dismiss();
                   });
                 });
               });
             }
-          }, child: Text('Upload')),
+            setState(() {
+              _productProvider.getFormData(imageUrlList: _imageUrlList);
+              EasyLoading.dismiss();
+            });
+          }, child: _image.isNotEmpty? Text('Upload'):Text('')),
         ],
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
