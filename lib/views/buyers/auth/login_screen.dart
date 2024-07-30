@@ -33,6 +33,9 @@ class _LoginScreenState extends State<LoginScreen> {
           },
         ));
       }else{
+        setState(() {
+          _isLoading = false;
+        });
         return showSnack(context, res);
       }
     } else {

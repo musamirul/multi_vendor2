@@ -17,11 +17,11 @@ void main() async{
   );
   // runApp(MyApp());
   runApp(
-    ChangeNotifierProvider(
-      create: (BuildContext context) => ProductProvider(),
-      child: MyApp(),
-    ),
-  );
+    MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_){
+        return ProductProvider();
+      })
+    ], child: MyApp()));
 }
 
 
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget{
       theme: ThemeData(
         primaryColor: Colors.blue,
       ),
-      home: VendorAuthScreen(),
+      home: VendorAuthScreen(),//LoginScreen(),
       builder: EasyLoading.init(),
     );
   }
